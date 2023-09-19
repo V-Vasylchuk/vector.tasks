@@ -12,18 +12,15 @@ public class RailFenceCipherEncoder {
         int n = 0;
         for (int i = 0; i < rails; i++) {
             int index = i;
+            int step = i == 0 || i == rails - 1 ? 2 * (rails - 1) : 0;
             boolean goingDown = true;
             while (index < message.length()) {
                 encryptedMessage[n++] = message.charAt(index);
-                if (i == 0 || i == rails - 1) {
-                    index = index + 2 * (rails - 1);
-                } else if (goingDown) {
-                    index = index + 2 * (rails - i - 1);
-                    goingDown = !goingDown;
-                } else {
-                    index = index + 2 * i;
+                if (step == 0) {
+                    step = goingDown ? 2 * (rails - i - 1) : 2 * i;
                     goingDown = !goingDown;
                 }
+                index += step;
             }
         }
         return new String(encryptedMessage);
@@ -37,18 +34,15 @@ public class RailFenceCipherEncoder {
         int n = 0;
         for (int i = 0; i < rails; i++) {
             int index = i;
+            int step = i == 0 || i == rails - 1 ? 2 * (rails - 1) : 0;
             boolean goingDown = true;
             while (index < message.length()) {
                 decryptedMessage[index] = message.charAt(n++);
-                if (i == 0 || i == rails - 1) {
-                    index = index + 2 * (rails - 1);
-                } else if (goingDown) {
-                    index = index + 2 * (rails - i - 1);
-                    goingDown = !goingDown;
-                } else {
-                    index = index + 2 * i;
+                if (step == 0) {
+                    step = goingDown ? 2 * (rails - i - 1) : 2 * i;
                     goingDown = !goingDown;
                 }
+                index += step;
             }
         }
         return new String(decryptedMessage);
